@@ -12,9 +12,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(plugin_BUILDER xcodebuild)
   set(CMAKE_SKIP_BUILD_RPATH TRUE)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  set(plugin_BUILD_DIR ${plugin_BUILDS_DIR}/Linux)
+  set(plugin_BUILD_DIR ${plugin_BUILDS_DIR}/LinuxMakefile)
   set(plugin_OUTPUT ${plugin_BUILDS_DIR}/build/${CMAKE_PROJECT_NAME}.so)
-  set(plugin_BUILDER make -j8)
+  set(plugin_BUILDER make -j$(nproc))
 endif()
 
 # Create a custom target that will build the generated project from Introjucer

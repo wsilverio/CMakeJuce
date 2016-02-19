@@ -1,90 +1,59 @@
 CMakeJuce
 =========
 
-This project contains a single CMake file which can be included by
+This project is a copy of [teragonaudio/CMakeJuce][CMakeJuce].  
+Contains a single CMake file which can be included by
 [Juce][juce] projects in order to build them with the project files generated
-by Introjucer. Similar projects, like [cmake-juce][cmake-juce] attempt to
-solve this problem by recreating the build targets like Juce does. This
-project provides CMake with a way to build via the generated project files by
-Introjucer.
+by Introjucer.  
 
-The raison d'être of this project is the ability to use alternative IDEs such
-as [CLion][clion] or [NetBeans][netbeans] with Juce projects. Since Introjucer
-does not support CMake as a build target type, this file can allow one to
-utilize Introjucer without being forced to a particular IDE.
+
+Tested with [CLion-1.2.4][clion] and [Creator-3.6.0][qt] on Ubuntu-15.10.
 
 
 Project setup
 -------------
 
-First, generate a new Juce project with Introjucer. Then add this project's
-repository to your Juce project as a submodule under the `Builds` folder. So
-an example project structure might look something like this:
-
-    /path/to/YourProjectName
-    ├── Builds
-    │   ├── CMakeJuce <-- This repo
-    │   ├── Linux
-    │   ├── MacOSX
-    │   └── VisualStudio2013
-    ├── CMakeLists.txt
-    ├── YourProjectName.jucer
-    ├── JuceLibraryCode
-    │   ├── AppConfig.h
-    │   ├── JuceHeader.h
-    │   ├── ReadMe.txt
-    │   └── modules
-    ├── LICENSE
-    ├── README.md
-    ├── Source
-    │   ├── PluginEditor.cpp
-    │   ├── PluginEditor.h
-    │   ├── PluginProcessor.cpp
-    │   └── PluginProcessor.h
-
-
-Create the following `CMakeLists.txt` file in your project's top-level
-directory:
-
-```cmake
-cmake_minimum_required(VERSION 2.8)
-project(YourProjectName)
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  add_subdirectory(Builds/MacOSX)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  add_subdirectory(Builds/Linux)
-endif()
+First, generate a new Juce project with Introjucer.  
+ Then add this project's
+repository to your Juce project as a submodule under the `Builds` folder.  
+```
+cd jucerProjectDir/Builds
+git clone https://github.com/wsilverio/CMakeJuce.git
 ```
 
-`YourProjectName` should match the project name which you made in Introjucer.
-For each platform that you want to build, create a `CMakeLists.txt` file in
-that subdirectory (for instance, under `Builds/Linux` or `Builds/MacOSX`). It
-should contain the following:
+Execute `setup.py` script:
 
-```cmake
-cmake_minimum_required(VERSION 2.8)
-include(../CMakeJuce/juce.cmake)
+```
+python setup.py
 ```
 
-The reason that this is required is that we want the `include` to come from
-the same directory as the Introjucer-generated build file. That way, compiler
-errors will have correct relative paths and be rendered as links in IDEs that
-support this feature.
+An example project structure might look something like this:
 
+```
+  jucerProjectDir  
+  ├── Builds  
+  │   ├── CMakeJuce <-- This repo  
+  │   └── LinuxMakefile  
+  │       ├── Makefile <-- Created by Introjucer  
+  │       ├── CMakeLists.txt <-- Created by this script  
+  │       └── build  
+  │           └── ExecutableName <-- Created by Makefile (IDE)
+  ├── CMakeLists.txt <-- Created by this script  
+  ├── YourProjectName.jucer  
+  ├── JuceLibraryCode  
+  │   └── /..Juce files../  
+  └── Source  
+    └── /..Source files../  
+```
 
-Usage
------
+Point your CMakeList's IDE to `jucerProjectDir/CMakeLists.txt` and your executable to `jucerProjectDir/LinuxMakefile/build/ExecutableName`.  
 
-Once you have the initial project set up, point your CMake-supported IDE to
-the top-level `CMakeLists.txt` file and everything should work out! This
-project will generate for you two targets, `YourProjectName` and
-`virtual_TARGET`. Set `YourProjectName` as the compiler target as the
-`virtual_TARGET` is only used to give a target to the IDE for correct indexing
-of the project's source code.
+Video example  
+------------  
 
+<center>[![Youtube- Garagem Hacker: Arduino Dojo Shield](http://img.youtube.com/vi/ABC123/0.jpg)](http://www.youtube.com/watch?v=ABC123)</center>
 
 [juce]: http://www.juce.com
-[cmake-juce]: https://github.com/nclack/cmake-juce
+[CMakeJuce]: https://github.com/teragonaudio/CMakeJuce/
 [clion]: https://www.jetbrains.com/clion/
-[netbeans]: https://netbeans.org/features/cpp/
+[qt]: https://netbeans.org/features/cpp/
