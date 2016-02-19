@@ -104,19 +104,20 @@ if platform.system() == "Linux":
 else:
     print "[error] Plataform system not implemented."
     exit()
+
 try:
     f = open(cmakeFile, "w+")
+    f.write(
+        "cmake_minimum_required(VERSION 2.8)\n" \
+        "include(../CMakeJuce/juce.cmake)"
+    )
 except IOError as e:
     if e.errno == errno.ENOENT:
         usage()
         print "[error] Have you created an export target with Introjucer?\n"
         exit()
-        raise
     else:
-        with f:
-            f.write(
-                "cmake_minimum_required(VERSION 2.8)\n" \
-                "include(../CMakeJuce/juce.cmake)"
-            )
+        print e
+        exit()
 
 print "Generated %s/Builds/%s\n" % (projectDirName, cmakeFile[3:])
